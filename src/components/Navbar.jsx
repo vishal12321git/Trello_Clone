@@ -7,6 +7,7 @@ import { MdContactSupport } from 'react-icons/md'
 import { IoIosSearch } from 'react-icons/io'
 import Dialog from './Dialog'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
+import { Link } from 'react-router-dom'
 
 
 const Navbar = () => {
@@ -15,10 +16,10 @@ const Navbar = () => {
   return (
     <div className='shadow'>
       <div className='h-20 flex justify-between items-center gap-4 w-11/12 m-auto'>
-        <div className='w-8 sm:w-20'>
+        <Link to='/' className='w-8 sm:w-20'>
           <img src={trelloLogo} className='object-contain w-full hidden sm:block' />
           <img src={trelloSmLogo} className='object-contain w-full block sm:hidden' />
-        </div>
+        </Link>
         <div className='flex items-center justify-center gap-4'>
           <IoIosSearch className='h-full w-8 block sm:hidden' />
           <Input type="email" placeholder="🔍 Search" className={'hidden sm:block w-80 lg:w-150'} />

@@ -12,10 +12,8 @@ const Dialog = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault()
     const newBoard = await createBoard(title)
-    console.log(newBoard)
     if (newBoard?.id) {
       setAllBoards([newBoard, ...allBoards])
-      console.log(allBoards)
       setIsDialogOpen(false)
     }
   }
@@ -27,7 +25,7 @@ const Dialog = () => {
     >
       <div className='flex justify-between items-center'>
         <h3>Create new board</h3>
-        <RxCross2 />
+        <RxCross2 onClick={()=>setIsDialogOpen(false)}/>
       </div>
 
       <InputWithText
