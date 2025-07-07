@@ -1,11 +1,13 @@
 import React from 'react'
-import { Button } from '@/components/ui/button'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './routes/Routes'
+import { AllBoardsProvider } from './contexts/AllBoardsProvider'
 
 const App = () => {
   return (
-    <RouterProvider router={router}></RouterProvider>
+    <AllBoardsProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </AllBoardsProvider>
   )
 }
 export default App
