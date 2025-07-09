@@ -29,7 +29,6 @@ export function addCardApi(name, listId) {
   return `${BASE_URL}/1/cards?name=${encodeURIComponent(name)}&idList=${listId}&key=${API_KEY}&token=${TOKEN}`
 }
 
-
 export async function fetchAllBoards() {
   try {
     const apiUrl = fetchAllBoardsApi()
@@ -95,4 +94,95 @@ export async function createCard(name, listId) {
     console.error('Error creating card:', err)
     throw err
   }
+}
+
+export function getChecklistsOfCardApi(cardId) {
+  return `${BASE_URL}/1/cards/${cardId}/checklists?key=${API_KEY}&token=${TOKEN}`
+}
+
+export async function fetchChecklistsOfCard(cardId) {
+  try {
+    const apiUrl = getChecklistsOfCardApi(cardId)
+    const res = await axios.get(apiUrl)
+    return res.data
+  } catch (err) {
+    console.error('Error fetching checklists of card:', err)
+    throw err
+  }
+}
+
+export function createChecklistApi(cardId, name) {
+  return `${BASE_URL}/1/checklists?idCard=${cardId}&name=${encodeURIComponent(name)}&key=${API_KEY}&token=${TOKEN}`
+}
+
+export async function createChecklist(cardId, name) {
+  try {
+    const apiUrl = createChecklistApi(cardId, name)
+    const res = await axios.post(apiUrl)
+    return res.data
+  } catch (err) {
+    console.error('Error creating checklist:', err)
+    throw err
+  }
+}
+
+export function getCheckItemsApi(checklistId) {
+  return `${BASE_URL}/1/checklists/${checklistId}?key=${API_KEY}&token=${TOKEN}`
+}
+
+export async function fetchCheckItemsOfChecklist(checklistId) {
+  try {
+    const apiUrl = getCheckItemsApi(checklistId)
+    const res = await axios.get(apiUrl)
+    return res.data.checkItems // note: checkItems is inside the checklist object
+  } catch (err) {
+    console.error('Error fetching checkItems:', err)
+    throw err
+  }
+}
+
+export function createCheckItemApi(checklistId, name) {
+  return `${BASE_URL}/1/checklists/${checklistId}/checkItems?name=${encodeURIComponent(name)}&key=${API_KEY}&token=${TOKEN}`
+}
+
+export async function createCheckItem(checklistId, name) {
+  try {
+    const apiUrl = createCheckItemApi(checklistId, name)
+    const res = await axios.post(apiUrl)
+    return res.data
+  } catch (err) {
+    console.error('Error creating checkItem:', err)
+    throw err
+  }
+}
+
+// Update Card
+export async function updateCardName(id, newName) {
+  const url = `${BASE_URL}/1/cards/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
+  return axios.put(url)
+}
+
+// Update List
+export async function updateListName(id, newName) {
+  const url = `${BASE_URL}/1/lists/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
+  return axios.put(url)
+}
+
+// Update Checklist
+export async function updateChecklistName(id, newName) {
+  const url = `${BASE_URL}/1/checklists/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
+  return axios.put(url)
+}
+
+// Update CheckItem
+export async function updateCheckItemName(cardId, checkItemId, newName) {
+  const url = `${BASE_URL}/1/cards/${cardId}/checkItem/${checkItemId}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
+  const res = axios.put(url)
+  return res
+}
+
+// Update Board
+export async function updateBoardName(id, newName) {
+  const url = `${BASE_URL}/1/boards/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
+  return axios.put(url)
 }

@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import Card from './Card'
 import { GoPlus } from 'react-icons/go'
 import { fetchCardsOfList } from '@/utils/FetchApi'
+import CardDialog from './CardDialog'
 
 const List = ({ list }) => {
   const [cards, setCards] = useState([])
+  const [isCardDialogOpen, setIsCardDialogOpen] = useState(false)
   useEffect(() => {
     const loadCards = async () => {
       const res = await fetchCardsOfList(list.id)
@@ -15,7 +17,7 @@ const List = ({ list }) => {
   }, [list.id])
 
   function handleClickAddCard() {
-    {''}
+    setIsCardDialogOpen(true)
   }
   return (
     <div className='flex flex-col gap-3 w-66 border-1 rounded justify-evenly py-3 px-3'>
@@ -25,12 +27,15 @@ const List = ({ list }) => {
       </div>
       {/* <Card /> */}
       {cards.map((card) => (
-        <Card card={card} />
+        <Card card={card} list={list}/>
       ))}
-      <div className='flex gap-3 items-center border-1 rounded w-full min-h-10'>
-        <GoPlus className='text-lg' />
-        <span onClick={handleClickAddCard}>Add a card</span>
-      </div>
+      {isCardDialogOpen ?
+        <CardDialog setIsCardDialogOpen={setIsCardDialogOpen} cards={cards} setCards={setCards} key={list.id} listId={list.id}/> :
+        <div className='flex gap-3 items-center border-1 rounded w-full min-h-10'>
+          <GoPlus className='text-lg' />
+          <div onClick={handleClickAddCard}>Add a card</div>
+        </div>
+      }
     </div>
   )
 }
