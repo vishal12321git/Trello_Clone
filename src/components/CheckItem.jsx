@@ -3,16 +3,19 @@ import { TbHttpDelete } from 'react-icons/tb'
 import EditItemDialog from './EditItemDialog'
 import { deleteCheckItem, updateCheckItemState } from '@/utils/FetchApi'
 
-const CheckItem = ({ item, setChecked, checklist, allItems, setAllItems }) => {
-  const [isChecked, setIsChecked] = useState(item.state === 'complete')
+const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
   const [isEditItemDialogOpen, setIsEditItemDialogOpen] = useState(false)
+  const isChecked = item.state === 'complete'
 
   const handleCheckboxChange = async (e) => {
     const checked = e.target.checked
-    setIsChecked(checked)
     try {
       await updateCheckItemState(checklist.idCard, item.id, checked)
-      setChecked((prev) => checked ? prev + 1 : prev - 1)
+      // Update the item's state in the allItems array
+      setAllItems(allItems.map((i) =>
+        i.id === item.id ?
+          { ...i, state: checked ? 'complete' : 'incomplete' } : i,
+      ))
     } catch (error) {
       console.error('Error updating check item state:', error)
     }
@@ -23,7 +26,6 @@ const CheckItem = ({ item, setChecked, checklist, allItems, setAllItems }) => {
       const res = await deleteCheckItem(checklist.id, item.id)
       if (res.status === 200) {
         setAllItems(allItems.filter((i) => i.id !== item.id))
-        if (isChecked) setChecked((prev) => prev - 1)
       }
     } catch (err) {
       console.error('Failed to delete check item:', err)
