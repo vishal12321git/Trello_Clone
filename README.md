@@ -125,10 +125,3 @@ A fully-functional **Trello Clone built with React**, implementing **client-side
 * Suitable for demonstrating **full-stack front-end skills** and API integration.
 
 ---
-
-## 🧑‍💻 Author
-
-**Vishal Pandey**
-[LinkedIn](https://linkedin.com/in/yourprofile) | [GitHub](https://github.com/yourusername)
-
----
