@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 import useClickOutside from '@/hooks/useClickOutside'
 import { createCard } from '@/utils/FetchApi'
 import React, { useEffect, useRef, useState } from 'react'
@@ -38,8 +36,12 @@ const CardDialog = ({ setIsCardDialogOpen, cards, setCards, listId }) => {
         ref={inputRef}
       />
       <div className='flex  gap-3 h-10 items-center'>
-        <button className='border-1 rounded px-2 h-full hover:bg-gray-200' type='submit'>Add Card</button>
-        <RxCross2 className='text-xl border-1 h-9 w-9 px-1 rounded hover:bg-gray-200' onClick={() => setIsCardDialogOpen(false)} />
+        <button
+          className='border-1 rounded px-2 h-full hover:bg-gray-200'
+          type='submit'>Add Card</button>
+        <RxCross2
+          className='text-xl border-1 h-9 w-9 px-1 rounded hover:bg-gray-200'
+          onClick={() => setIsCardDialogOpen(false)} />
       </div>
     </form>
   )

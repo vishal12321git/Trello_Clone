@@ -8,7 +8,7 @@ A fully-functional **Trello Clone built with React**, implementing **client-side
 
 ## 🚀 Live Demo
 
-🔗 **Deployed Link**: [https://your-deployed-site-link.com](https://your-deployed-site-link.com)
+🔗 **Deployed Link**: [https://your-deployed-site-link.com](https://trello-clone-henna-seven.vercel.app/)
 
 ---
 
@@ -114,7 +114,6 @@ A fully-functional **Trello Clone built with React**, implementing **client-side
 
 ## 🧾 Resources
 
-* 📹 [Project Reference Video](https://www.youtube.com/watch?v=db_y-sEA1ps)
 * 📄 [Trello API Guide](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/)
 
 ---

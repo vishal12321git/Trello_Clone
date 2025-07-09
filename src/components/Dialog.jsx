@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useContext, useState } from 'react'
 import { InputWithText } from './InputWithText'
 import { RxCross2 } from 'react-icons/rx'
@@ -7,7 +6,8 @@ import { AllBoardsContext } from '@/contexts/AllBoardsContext'
 
 const Dialog = () => {
   const [title, setTitle] = useState('')
-  const { setIsDialogOpen, allBoards, setAllBoards } = useContext(AllBoardsContext)
+  const { setIsDialogOpen, allBoards, setAllBoards } =
+    useContext(AllBoardsContext)
 
   const handleSubmitForm = async (e) => {
     e.preventDefault()
@@ -20,12 +20,13 @@ const Dialog = () => {
 
   return (
     <form
-      className='absolute top-25   sm:top-20  -right-full sm:-left-13 border-1 min-w-60 md:min-w-60 px-3 py-5 flex flex-col bg-gray-200 rounded'
+      className='absolute top-25   sm:top-20  -right-full sm:-left-13 border-1
+      min-w-60 md:min-w-60 px-3 py-5 flex flex-col bg-gray-200 rounded'
       onSubmit={handleSubmitForm}
     >
       <div className='flex justify-between items-center'>
         <h3>Create new board</h3>
-        <RxCross2 onClick={()=>setIsDialogOpen(false)}/>
+        <RxCross2 onClick={() => setIsDialogOpen(false)} />
       </div>
 
       <InputWithText

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import List from '@/components/List'
 import { fetchAllListsOfABoard } from '@/utils/FetchApi'
 import React, { useContext, useEffect, useState } from 'react'
@@ -49,12 +48,23 @@ const SingleBoardPage = () => {
       <div className='mx-5  flex gap-4 mt-4 overflow-x-scroll'>
         {lists.map((list) => (
           <div key={list.id} className="flex-shrink-0 w-66">
-            <List list={list} key={id} id={id} lists={lists} setLists={setLists} />
+            <List
+              list={list}
+              key={id}
+              id={id}
+              lists={lists}
+              setLists={setLists} />
           </div>
         ))}
         {isListDialogOpen ?
-          <ListDialog setIsListDialogOpen={setIsListDialogOpen} boardId={id} lists={lists} setLists={setLists} /> :
-          <div className='flex-shrink-0 flex gap-3 items-center border-1 rounded w-66 h-12 px-4 hover:bg-gray-200 bg-white'
+          <ListDialog
+            setIsListDialogOpen={setIsListDialogOpen}
+            boardId={id}
+            lists={lists}
+            setLists={setLists} /> :
+          <div
+            className='flex-shrink-0 flex gap-3 items-center border-1
+          rounded w-66 h-12 px-4 hover:bg-gray-200 bg-white'
             onClick={handleClickAddList}>
             <GoPlus className='text-lg' />
             <span >Add another list</span>

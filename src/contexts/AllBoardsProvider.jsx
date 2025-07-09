@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { fetchAllBoards } from '@/utils/FetchApi'
 import { AllBoardsContext } from './AllBoardsContext'
-// Create the context
 
-
-// Provider component
 export const AllBoardsProvider = ({ children }) => {
   const [allBoards, setAllBoards] = useState([])
   const [loading, setLoading] = useState(true)
