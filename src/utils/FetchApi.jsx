@@ -156,18 +156,6 @@ export async function createCheckItem(checklistId, name) {
   }
 }
 
-// Update Card
-export async function updateCardName(id, newName) {
-  const url = `${BASE_URL}/1/cards/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
-  return axios.put(url)
-}
-
-// Update List
-export async function updateListName(id, newName) {
-  const url = `${BASE_URL}/1/lists/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
-  return axios.put(url)
-}
-
 // Update Checklist
 export async function updateChecklistName(id, newName) {
   const url = `${BASE_URL}/1/checklists/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
@@ -181,8 +169,28 @@ export async function updateCheckItemName(cardId, checkItemId, newName) {
   return res
 }
 
-// Update Board
-export async function updateBoardName(id, newName) {
-  const url = `${BASE_URL}/1/boards/${id}?name=${encodeURIComponent(newName)}&key=${API_KEY}&token=${TOKEN}`
-  return axios.put(url)
+export async function deleteCheckItem(checklistId, checkItemId) {
+  const url = `${BASE_URL}/1/checklists/${checklistId}/checkItems/${checkItemId}?key=${API_KEY}&token=${TOKEN}`
+  return axios.delete(url)
+}
+
+export async function deleteChecklist(checklistId) {
+  const url = `${BASE_URL}/1/checklists/${checklistId}?key=${API_KEY}&token=${TOKEN}`
+  return axios.delete(url)
+}
+
+export async function deleteCard(cardId) {
+  const url = `${BASE_URL}/1/cards/${cardId}?key=${API_KEY}&token=${TOKEN}`
+  return axios.delete(url)
+}
+
+export async function deleteList(listId) {
+  const url = `${BASE_URL}/1/lists/${listId}/closed?key=${API_KEY}&token=${TOKEN}`
+  return axios.put(url, { value: true })
+}
+
+export async function updateCheckItemState(cardId, checkItemId, isComplete) {
+  const url = `${BASE_URL}/1/cards/${cardId}/checkItem/${checkItemId}?key=${API_KEY}&token=${TOKEN}`
+  const state = isComplete ? 'complete' : 'incomplete'
+  return axios.put(url, { state })
 }

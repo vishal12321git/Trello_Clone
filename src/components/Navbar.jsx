@@ -24,7 +24,7 @@ const Navbar = () => {
           <IoIosSearch className='h-full w-8 block sm:hidden' />
           <Input type="email" placeholder="🔍 Search" className={'hidden sm:block w-80 lg:w-150'} />
           <div className='relative '>
-            <div className='px-2 py-1 border-1 rounded' onClick={() => setIsDialogOpen((prevState) => !prevState)}>Create</div>
+            <div className='px-2 py-1 border-1 rounded hover:bg-gray-200' onClick={() => setIsDialogOpen((prevState) => !prevState)}>Create</div>
             {isDialogOpen && <Dialog/>}
           </div>
 

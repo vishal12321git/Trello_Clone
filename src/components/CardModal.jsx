@@ -6,6 +6,7 @@ import { FiCheckSquare } from 'react-icons/fi'
 import CheckListDialog from './CheckListDialog'
 import CheckList from './CheckList'
 import { fetchChecklistsOfCard } from '@/utils/FetchApi'
+import { TbHttpDelete } from 'react-icons/tb'
 
 
 const CardModal = ({ list, card, isOpen, onClose, checked, setChecked }) => {
@@ -26,7 +27,7 @@ const CardModal = ({ list, card, isOpen, onClose, checked, setChecked }) => {
         <div className='flex justify-between h-10'>
           <div>{list.name}</div>
           <div>
-            <RxCross2 onClick={onClose}/>
+            <RxCross2 onClick={onClose} className='text-2xl'/>
           </div>
         </div>
         <hr/>
@@ -48,10 +49,10 @@ const CardModal = ({ list, card, isOpen, onClose, checked, setChecked }) => {
                 rows={1}
                 className='border-1 w-full rounded resize-none p-2'
                 value={card.name}
-                // onChange={(e) => setCardName(e.target.value)}
+                disabled
               />
             </div>
-            <div className='flex border-1 w-fit items-center gap-2 px-1 py-1 rounded ml-7 mt-3' onClick={()=>setIsCheckListDialogOpen((prevState)=>!prevState)}>
+            <div className='flex border-1 w-fit items-center gap-2 px-1 py-1 rounded ml-7 mt-3 cursor-pointer' onClick={()=>setIsCheckListDialogOpen((prevState)=>!prevState)}>
               <FiCheckSquare/>
               <span className='text-sm'>Checklist</span>
             </div>

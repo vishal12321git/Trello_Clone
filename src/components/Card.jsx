@@ -2,15 +2,29 @@
 import React, { useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import CardModal from './CardModal'
+import { TbHttpDelete } from 'react-icons/tb'
+import { deleteCard } from '@/utils/FetchApi'
 
-const Card = ({ card, list }) => {
+const Card = ({ card, list, cards, setCards }) => {
   const [checked, setChecked] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const handleDelete = async (e) => {
+    e.stopPropagation()
+    try {
+      const res = await deleteCard(card.id)
+      if (res.status == 200) {
+        const updatedCards = cards.filter((c) => c.id !== card.id)
+        setCards(updatedCards)
+      }
+    } catch (err) {
+      console.log('Error while deleting card', err)
+    }
+  }
 
   return (
     <>
       <div
-        className="flex items-center border-1 min-h-10 rounded px-2 cursor-pointer group transition-all duration-300"
+        className="flex justify-between items-center border-1 min-h-10 rounded px-2 cursor-pointer group transition-all duration-300"
         onClick={() => setIsModalOpen(true)}
       >
         <div
@@ -27,12 +41,12 @@ const Card = ({ card, list }) => {
         </div>
 
         <span
-          className={`transition-transform duration-300 ${
-            checked ? 'translate-x-2' : 'group-hover:translate-x-2'
+          className={`transition-transform duration-300 ${checked ? 'translate-x-2' : 'group-hover:translate-x-2'
           }`}
         >
           {card.name}
         </span>
+        <TbHttpDelete onClick={(e) => handleDelete(e)} className='text-xl hover:text-red-400'/>
       </div>
 
       <CardModal list={list} card={card} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} checked={checked} setChecked={setChecked}>
