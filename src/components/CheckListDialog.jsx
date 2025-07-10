@@ -25,7 +25,7 @@ const CheckListDialog = ({
   }, [])
   useClickOutside(dialogRef, () => setIsCheckListDialogOpen(false))
   return (
-    <div className=' w-66 ml-5 mt-1 border-1 rounded'>
+    <div className=' w-full  mt-1 border-1 rounded'>
       <div className='flex p-2 items-center'>
         <div className='w-full text-center'>Add checklist</div>
         <RxCross2

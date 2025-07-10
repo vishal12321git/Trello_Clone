@@ -21,10 +21,10 @@ const CardModal = ({ list, card, isOpen, onClose, checked, setChecked }) => {
   return (
     <div
       className="fixed inset-0 z-50 flex py-10
-    justify-center bg-black/40 backdrop-blur-sm">
+    justify-center bg-black/40 backdrop-blur-sm px-4">
       <div
-        className="bg-white rounded-lg p-6 w-[60%]
-      max-w-3xl shadow-lg relative overflow-y-scroll">
+        className="bg-white rounded-lg p-6 w-full
+      shadow-lg relative overflow-y-scroll max-w-md">
         <div className='flex justify-between h-10'>
           <div>{list.name}</div>
           <div>

@@ -45,9 +45,9 @@ const SingleBoardPage = () => {
       <h2 className='text-3xl text-white font-bold px-5 '>
         {board?.name || 'Loading board...'}
       </h2>
-      <div className='mx-5  flex gap-4 mt-4 overflow-x-scroll'>
+      <div className='mx-5  flex gap-4 mt-4 min-h-screen overflow-x-auto '>
         {lists.map((list) => (
-          <div key={list.id} className="flex-shrink-0 w-66">
+          <div key={list.id} className="flex-shrink-0 max-w-66">
             <List
               list={list}
               key={id}
