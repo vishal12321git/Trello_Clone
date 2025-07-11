@@ -2,9 +2,9 @@ import List from '@/components/List'
 import { fetchAllListsOfABoard } from '@/utils/FetchApi'
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { GoPlus } from 'react-icons/go'
 import ListDialog from '@/components/ListDialog'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
+import { Button } from 'antd'
 
 
 const SingleBoardPage = () => {
@@ -42,9 +42,12 @@ const SingleBoardPage = () => {
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
         backgroundColor: backgroundImage ? undefined : backgroundColor,
       }}>
-      <h2 className='text-3xl text-white font-bold px-5 '>
-        {board?.name || 'Loading board...'}
-      </h2>
+      <div className='w-full overflow-hidden break-words'>
+        <h2 className='text-3xl text-white font-bold px-5 '>
+          {board?.name || 'Loading board...'}
+        </h2>
+      </div>
+
       <div className='mx-5  flex gap-4 mt-4 min-h-screen overflow-x-auto '>
         {lists.map((list) => (
           <div key={list.id} className="flex-shrink-0 max-w-66">
@@ -62,13 +65,13 @@ const SingleBoardPage = () => {
             boardId={id}
             lists={lists}
             setLists={setLists} /> :
-          <div
-            className='flex-shrink-0 flex gap-3 items-center border-1
-          rounded w-66 h-12 px-4 hover:bg-gray-200 bg-white'
-            onClick={handleClickAddList}>
-            <GoPlus className='text-lg' />
-            <span >Add another list</span>
-          </div>
+
+          <Button
+            type="primary"
+            className='w-66'
+            onClick={handleClickAddList}
+          >Add another list</Button>
+
         }
       </div>
     </div>

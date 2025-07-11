@@ -1,27 +1,37 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import { Card } from 'antd'
 
 const Board = ({ name, bg, id }) => {
   const isImage = typeof bg === 'string' && bg.startsWith('http')
-  // console.log('id', id)
+
   return (
-    <Link
-      to={`/board/${id}`}
-      className='rounded-md border-1 overflow-hidden max-w-70 ' >
-      <div className={`h-20  rounded `}>
-        {isImage ? (
-          <img src={bg} alt={name} className="object-cover h-full w-full" />
-        ) : (
-          <div
-            style={{ backgroundColor: bg }}
-            className="h-full w-full"
-          ></div>
-        )}
-      </div>
-      <div className='text-center py-2'>{name}</div>
+    <Link to={`/board/${id}`} className="block w-full max-w-72">
+      <Card
+        hoverable
+        bordered={false}
+        className="rounded-md overflow-hidden shadow-md"
+        bodyStyle={{ padding: '12px 16px', textAlign: 'center' }}
+        cover={
+          isImage ? (
+            <img
+              alt={name}
+              src={bg}
+              className="object-cover h-32 w-full"
+            />
+          ) : (
+            <div
+              style={{ backgroundColor: bg }}
+              className="h-32 w-full"
+            />
+          )
+        }
+      >
+        <div className="text-base font-medium truncate">{name}</div>
+      </Card>
     </Link>
   )
 }
 
 export default Board
+

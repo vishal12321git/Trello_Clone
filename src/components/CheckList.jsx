@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { IoMdCheckboxOutline } from 'react-icons/io'
-import { Progress } from '@/components/ui/progress'
+import { Progress, Button, Tooltip, Typography, Space, Divider } from 'antd'
+import { TbHttpDelete } from 'react-icons/tb'
 import CheckItemDialog from './CheckItemDialog'
 import CheckItem from './CheckItem'
-import { TbHttpDelete } from 'react-icons/tb'
-import { deleteChecklist, fetchCheckItemsOfChecklist } from '@/utils/FetchApi'
+import {
+  deleteChecklist,
+  fetchCheckItemsOfChecklist,
+} from '@/utils/FetchApi'
+
+const { Text } = Typography
 
 const CheckList = ({ checklist, allCheckLists, setAllCheckLists }) => {
   const [isItemDialogOpen, setIsItemDialogOpen] = useState(false)
   const [allItems, setAllItems] = useState([])
 
-  // Calculate checked count based on current allItems
   const checkedCount = allItems.filter(
     (item) => item.state === 'complete',
   ).length
-  const progressPercentage = allItems.length === 0 ?
-    0 :
-    Math.floor(100 * checkedCount / allItems.length)
+  const progressPercentage =
+    allItems.length === 0 ? 0 :
+      Math.floor((checkedCount / allItems.length) * 100)
 
   useEffect(() => {
     const loadCheckItems = async () => {
       const res = await fetchCheckItemsOfChecklist(checklist.id)
-      if (res) {
-        setAllItems(res)
-      }
+      if (res) setAllItems(res)
     }
     loadCheckItems()
   }, [checklist.id])
@@ -32,58 +34,70 @@ const CheckList = ({ checklist, allCheckLists, setAllCheckLists }) => {
     try {
       const res = await deleteChecklist(checklist.id)
       if (res.status === 200) {
-        const updatedChecklists = allCheckLists.filter(
-          (i) => i.id != checklist.id,
-        )
-        setAllCheckLists(updatedChecklists)
+        setAllCheckLists(allCheckLists.filter((i) => i.id !== checklist.id))
       }
     } catch (err) {
-      console.error('Failed to delete check item:', err)
+      console.error('Failed to delete checklist:', err)
     }
   }
 
   return (
-    <div className='flex flex-col gap-1'>
-      <div className='flex gap-3 h-10'>
-        <div className='flex items-center w-full gap-3'>
-          <IoMdCheckboxOutline className='text-xl' />
-          <div className='w-full h-full rounded flex items-center'>
-            {checklist.name}
-          </div>
-        </div>
+    <div className="flex flex-col gap-3 mb-6 p-4
+    border rounded-lg bg-white shadow-sm">
+
+      <div className="flex justify-between items-center">
+        <Space align="center">
+          <IoMdCheckboxOutline className="text-lg" />
+          <Text strong>{checklist.name}</Text>
+        </Space>
         <TbHttpDelete
-          className='h-full w-11 px-2 rounded-lg hover:bg-red-200'
-          onClick={handleDelete} />
+          className="text-xl text-red-500 cursor-pointer hover:text-red-600"
+          onClick={handleDelete}
+        />
       </div>
-      <div className='flex items-center gap-3'>
-        <div
-          className='text-sm'>
-          {allItems.length === 0 ? '0%' : `${progressPercentage}%`}
-        </div>
-        <Progress value={progressPercentage} />
+
+      {/* Progress Bar */}
+      <div className="flex items-center gap-3">
+        <Text type="secondary" className="min-w-[30px]">
+          {progressPercentage}%
+        </Text>
+        <Progress
+          percent={progressPercentage}
+          size="small"
+          showInfo={false}
+          style={{ flex: 1 }}
+        />
       </div>
+
       {allItems.map((item) => (
         <CheckItem
           key={item.id}
+          item={item}
           allItems={allItems}
           setAllItems={setAllItems}
-          item={item}
           checklist={checklist}
         />
       ))}
-      {isItemDialogOpen ?
+
+      {isItemDialogOpen ? (
         <CheckItemDialog
           setIsItemDialogOpen={setIsItemDialogOpen}
-          checklist={checklist} allItems={allItems}
-          setAllItems={setAllItems} /> :
-        <div
-          className='px-2 py-1 border-1 rounded w-fit ml-8
-           hover:bg-gray-200 cursor-pointer'
-          onClick={() => setIsItemDialogOpen((prevState) => !prevState)}
-        >Add an item</div>
-      }
+          checklist={checklist}
+          allItems={allItems}
+          setAllItems={setAllItems}
+        />
+      ) : (
+        <Button
+          type="dashed"
+          className="ml-6 w-fit"
+          onClick={() => setIsItemDialogOpen(true)}
+        >
+          Add an Item
+        </Button>
+      )}
     </div>
   )
 }
 
 export default CheckList
+

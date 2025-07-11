@@ -1,50 +1,69 @@
 import useClickOutside from '@/hooks/useClickOutside'
 import { createCard } from '@/utils/FetchApi'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { RxCross2 } from 'react-icons/rx'
+import { Button, Form, Input } from 'antd'
+
+const { TextArea } = Input
 
 const CardDialog = ({ setIsCardDialogOpen, cards, setCards, listId }) => {
-  const [cardName, setCardName] = useState('')
-  const inputRef = useRef(null)
   const dialogRef = useRef(null)
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault()
-    if (!cardName || cardName == '') {
-      return
-    }
-    const res = await createCard(cardName, listId)
-    if (res?.id) {
-      setCards([res, ...cards])
-    }
-  }
-  useEffect(() => {
-    inputRef?.current.focus()
-  }, [])
+  const inputRef = useRef(null)
+  const [form] = Form.useForm()
 
   useClickOutside(dialogRef, () => setIsCardDialogOpen(false))
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
+
+  const handleFormSubmit = async (values) => {
+    const { cardName } = values
+    if (!cardName?.trim()) return
+
+    const res = await createCard(cardName.trim(), listId)
+    if (res?.id) {
+      setCards([...cards, res])
+      form.resetFields()
+      inputRef.current?.focus()
+    }
+  }
+
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className='flex-shrink-0 flex flex-col gap-3 h-fit rounded'
-      ref={dialogRef}>
-      <textarea
-        rows={2}
-        className='border-1 w-full rounded resize-none p-2'
-        placeholder='Enter a title or paste a link'
-        onChange={(e) => setCardName(e.target.value)}
-        ref={inputRef}
-      />
-      <div className='flex  gap-3 h-10 items-center'>
-        <button
-          className='border-1 rounded px-2 h-full hover:bg-gray-200'
-          type='submit'>Add Card</button>
-        <RxCross2
-          className='text-xl border-1 h-9 w-9 px-1 rounded hover:bg-gray-200'
-          onClick={() => setIsCardDialogOpen(false)} />
-      </div>
-    </form>
+    <div
+      ref={dialogRef}
+      className='flex-shrink-0 flex flex-col gap-3 h-fit
+      rounded bg-white border-1 p-3 w-full'
+    >
+      <Form
+        form={form}
+        onFinish={handleFormSubmit}
+        layout="vertical"
+        autoComplete="off"
+      >
+        <Form.Item
+          name="cardName"
+          rules={[{ required: true, message: 'Card name cannot be empty.' }]}
+        >
+          <TextArea
+            rows={2}
+            placeholder="Enter a title or paste a link"
+            autoSize={{ minRows: 2, maxRows: 4 }}
+            ref={inputRef}
+          />
+        </Form.Item>
+        <div className="flex gap-3 items-center">
+          <Button type="primary" htmlType="submit">Add card</Button>
+          <RxCross2
+            className="text-xl h-9 w-9 px-1 rounded text-red-500
+            cursor-pointer hover:text-red-600"
+            onClick={() => setIsCardDialogOpen(false)}
+          />
+        </div>
+      </Form>
+    </div>
   )
 }
 
 export default CardDialog
+

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
-import { GoPlus } from 'react-icons/go'
 import { deleteList, fetchCardsOfList } from '@/utils/FetchApi'
 import CardDialog from './CardDialog'
 import { TbHttpDelete } from 'react-icons/tb'
+import { Button } from 'antd'
 
 const List = ({ list, lists, setLists }) => {
   const [cards, setCards] = useState([])
@@ -41,13 +41,13 @@ const List = ({ list, lists, setLists }) => {
         <input
           type="text"
           value={list.name}
-          className='w-full text-lg'
+          className='w-full text-lg pr-2'
           disabled />
         <TbHttpDelete
           className='mr-2 text-2xl hover:text-red-500'
           onClick={handleDelete} />
       </div>
-      {/* <Card /> */}
+
       {cards.map((card) => (
         <Card card={card} list={list} cards={cards} setCards={setCards} />
       ))}
@@ -58,13 +58,7 @@ const List = ({ list, lists, setLists }) => {
           setCards={setCards}
           key={list.id}
           listId={list.id} /> :
-        <div
-          className='flex gap-3 items-center border-1
-         hover:bg-gray-200 rounded w-full min-h-10 pl-2'
-          onClick={handleClickAddCard}>
-          <GoPlus className='text-lg' />
-          <div >Add a card</div>
-        </div>
+        <Button type="primary" onClick={handleClickAddCard}>Add a card</Button>
       }
     </div>
   )

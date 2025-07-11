@@ -1,22 +1,17 @@
-/* eslint-disable max-len */
 import BoardsContainer from '@/components/BoardsContainer'
-import { Input } from '@/components/ui/input'
 import React from 'react'
+import { Input, Typography, Row, Col } from 'antd'
 
+const { Title } = Typography
 
 const HomePage = () => {
   return (
-    <div className='w-11/12 m-auto py-4'>
-      <div className='mt-10 flex justify-between gap-8'>
-        <div className=' text-2xl font-bold'>Boards</div>
-
-        <input
-          type='text'
-          id='search'
-          className='w-full max-w-52  flex-shrink border-1 py-1 px-2 rounded block sm:hidden'
-          placeholder='Search'></input>
-
-      </div>
+    <div className='w-11/12 m-auto py-6'>
+      <Row justify="space-between" align="middle" className="mb-6" gutter={[16, 16]}>
+        <Col>
+          <Title level={3} style={{ margin: 0 }}>Boards</Title>
+        </Col>
+      </Row>
 
       <BoardsContainer />
     </div>
@@ -24,3 +19,4 @@ const HomePage = () => {
 }
 
 export default HomePage
+

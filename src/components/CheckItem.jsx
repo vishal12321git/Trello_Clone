@@ -1,20 +1,26 @@
 import React, { useState } from 'react'
+import { Checkbox, Typography, Button, Tooltip, Space } from 'antd'
 import { TbHttpDelete } from 'react-icons/tb'
 import EditItemDialog from './EditItemDialog'
 import { deleteCheckItem, updateCheckItemState } from '@/utils/FetchApi'
 
+const { Text, Paragraph } = Typography
+
+const MAX_LENGTH = 80
+
 const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
   const [isEditItemDialogOpen, setIsEditItemDialogOpen] = useState(false)
+
   const isChecked = item.state === 'complete'
 
   const handleCheckboxChange = async (e) => {
     const checked = e.target.checked
     try {
       await updateCheckItemState(checklist.idCard, item.id, checked)
-      // Update the item's state in the allItems array
       setAllItems(allItems.map((i) =>
         i.id === item.id ?
-          { ...i, state: checked ? 'complete' : 'incomplete' } : i,
+          { ...i, state: checked ? 'complete' : 'incomplete' } :
+          i,
       ))
     } catch (error) {
       console.error('Error updating check item state:', error)
@@ -33,14 +39,10 @@ const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
   }
 
   return (
-    <div className='flex items-center'>
-      <input
-        type="checkbox"
-        className='border-1'
-        checked={isChecked}
-        onChange={handleCheckboxChange}
-      />
-      <div className='flex items-start w-full ml-4 rounded-lg'>
+    <div className="flex items-start gap-3 mb-2 w-full">
+      <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+
+      <div className="flex-1 w-full">
         {isEditItemDialogOpen ? (
           <EditItemDialog
             setIsEditItemDialogOpen={setIsEditItemDialogOpen}
@@ -51,21 +53,31 @@ const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
           />
         ) : (
           <div
+            className="bg-gray-50 hover:bg-gray-100 px-3
+            py-1 rounded-md cursor-pointer transition"
             onClick={() => setIsEditItemDialogOpen(true)}
-            className='flex items-center justify-between w-full h-10
-            rounded-lg px-3 hover:bg-gray-100'
           >
-            <span>{isChecked ? <strike>{item.name}</strike> : item.name}</span>
+            <Paragraph
+              style={{
+                margin: 0,
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                textDecoration: isChecked ? 'line-through' : 'none',
+              }}
+            >
+              {item.name}
+            </Paragraph>
           </div>
         )}
-        <TbHttpDelete
-          className='flex items-center justify-center h-9 w-9 px-1 rounded-lg
-           hover:bg-red-200'
-          onClick={handleDelete}
-        />
       </div>
+
+      <TbHttpDelete
+        className="text-xl text-red-500 cursor-pointer hover:text-red-600"
+        onClick={handleDelete}
+      />
     </div>
   )
 }
 
 export default CheckItem
+

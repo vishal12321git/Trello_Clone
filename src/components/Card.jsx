@@ -3,6 +3,8 @@ import { FaCheck } from 'react-icons/fa'
 import CardModal from './CardModal'
 import { TbHttpDelete } from 'react-icons/tb'
 import { deleteCard } from '@/utils/FetchApi'
+import { Col, Row } from 'antd'
+import TextArea from 'antd/es/input/TextArea'
 
 const Card = ({ card, list, cards, setCards }) => {
   const [checked, setChecked] = useState(false)
@@ -22,39 +24,33 @@ const Card = ({ card, list, cards, setCards }) => {
 
   return (
     <>
-      <div
-        className="flex justify-between items-center border-1
-        min-h-10 rounded px-2
+      <Row
+        align="middle"
+        className="border-1 min-h-10 rounded px-2
         cursor-pointer group transition-all duration-300"
+        style={{ background: '#fff', marginBottom: '8px' }}
         onClick={() => setIsModalOpen(true)}
+        wrap={false} // prevents wrapping of children
       >
-        <div
-          className={`w-5 h-5 rounded-full flex items-center justify-center 
-            border transition-opacity duration-300 mr-2
-            ${checked ?
-      'bg-green-600 border-black opacity-100' :
-      'opacity-0 group-hover:opacity-100'}
-          `}
-          onClick={(e) => {
-            e.stopPropagation()
-            setChecked(!checked)
-          }}
-        >
-          {checked && <FaCheck className="text-white text-xs" />}
-        </div>
-
-        <span
-          className={`transition-transform duration-300 ${checked ?
-            'translate-x-2' :
-            'group-hover:translate-x-2'
-          }`}
-        >
-          {card.name}
-        </span>
-        <TbHttpDelete
-          onClick={(e) => handleDelete(e)}
-          className='text-xl hover:text-red-400' />
-      </div>
+        <Col flex="auto">
+          <TextArea
+            value={card.name}
+            autoSize={{ minRows: 1, maxRows: 100 }}
+            readOnly
+            bordered={false}
+            className="bg-transparent resize-none pointer-events-none"
+          />
+        </Col>
+        <Col flex="32px">
+          <TbHttpDelete
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDelete(e)
+            }}
+            className="text-xl hover:text-red-400"
+          />
+        </Col>
+      </Row>
 
       <CardModal
         list={list}

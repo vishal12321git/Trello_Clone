@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { FaCheck } from 'react-icons/fa'
-import { RxCross2 } from 'react-icons/rx'
+import { Modal, Typography, Button, Divider, Tooltip, Empty } from 'antd'
 import { FiCheckSquare } from 'react-icons/fi'
+import { RxCross2 } from 'react-icons/rx'
 import CheckListDialog from './CheckListDialog'
 import CheckList from './CheckList'
 import { fetchChecklistsOfCard } from '@/utils/FetchApi'
 
-const CardModal = ({ list, card, isOpen, onClose, checked, setChecked }) => {
+const { Title } = Typography
+
+const CardModal = ({ card, isOpen, onClose }) => {
   const [isCheckListDialogOpen, setIsCheckListDialogOpen] = useState(false)
   const [allCheckLists, setAllCheckLists] = useState([])
 
@@ -17,66 +19,80 @@ const CardModal = ({ list, card, isOpen, onClose, checked, setChecked }) => {
     }
     loadCheckLists()
   }, [card.id])
-  if (!isOpen) return null
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex py-10
-    justify-center bg-black/40 backdrop-blur-sm px-4">
+    <Modal
+      open={isOpen}
+      onCancel={onClose}
+      footer={null}
+      width={650}
+      closeIcon={false}
+      centered
+      styles={{
+        body: {
+          maxHeight: '70vh',
+          overflowY: 'auto',
+          padding: '24px',
+          background: '#fdfdfd',
+          borderRadius: '10px',
+          position: 'relative',
+        },
+      }}
+    >
       <div
-        className="bg-white rounded-lg p-6 w-full
-      shadow-lg relative overflow-y-scroll max-w-md">
-        <div className='flex justify-between h-10'>
-          <div>{list.name}</div>
-          <div>
-            <RxCross2 onClick={onClose} className='text-2xl' />
-          </div>
-        </div>
-        <hr />
-        <div className='flex flex-col gap-8 mt-4'>
-          <div>
-            <div className='flex items-center'>
-              <div
-                className={`w-5 h-5 rounded-full flex items-center 
-                  justify-center border transition-opacity duration-300 mr-2
-                   border-black opacity-100
-                          ${checked ? 'bg-green-600' : 'bg-white'}
-                        `}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setChecked(!checked)
-                }}>
-                {checked && <FaCheck className="text-white text-xs" />}
-              </div>
-              <textarea
-                rows={1}
-                className='border-1 w-full rounded resize-none p-2'
-                value={card.name}
-                disabled
-              />
-            </div>
-            <div
-              className='flex border-1 w-fit items-center gap-2 px-1 py-1
-            rounded ml-7 mt-3 cursor-pointer'
-              onClick={() => setIsCheckListDialogOpen(
-                (prevState) => !prevState)}>
-              <FiCheckSquare />
-              <span className='text-sm'>Checklist</span>
-            </div>
-            {isCheckListDialogOpen && <CheckListDialog
-              setIsCheckListDialogOpen={setIsCheckListDialogOpen}
-              cardId={card.id}
-              setAllCheckLists={setAllCheckLists}
-              allCheckLists={allCheckLists} />}
-          </div>
-          {allCheckLists.map((checklist) => (<CheckList
+        className="absolute top-7 right-4 cursor-pointer hover:text-red-500"
+        onClick={onClose}
+      >
+        <RxCross2 className="text-2xl transition-transform hover:scale-110" />
+      </div>
+
+      <Title
+        level={4}
+        className="m-0 mb-2 whitespace-nowrap
+          text-ellipsis overflow-hidden max-w-[85%]"
+      >
+        {card.name}
+      </Title>
+
+      <div className="flex mb-3">
+        <Button
+          icon={<FiCheckSquare />}
+          onClick={() => setIsCheckListDialogOpen((prev) => !prev)}
+          type="primary"
+        >
+          Add Checklist
+        </Button>
+      </div>
+
+      {isCheckListDialogOpen && (
+        <CheckListDialog
+          setIsCheckListDialogOpen={setIsCheckListDialogOpen}
+          cardId={card.id}
+          allCheckLists={allCheckLists}
+          setAllCheckLists={setAllCheckLists}
+        />
+      )}
+
+      <Divider />
+
+      {allCheckLists.length > 0 ? (
+        allCheckLists.map((checklist) => (
+          <CheckList
             allCheckLists={allCheckLists}
             setAllCheckLists={setAllCheckLists}
             checklist={checklist}
             key={checklist.id}
-            id={checklist.id} />))}
-        </div>
-      </div>
-    </div>
+            id={checklist.id}
+          />
+        ))
+      ) : (
+        <Empty
+          description="No checklists added"
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          style={{ marginTop: '2rem' }}
+        />
+      )}
+    </Modal>
   )
 }
 

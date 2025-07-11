@@ -1,6 +1,7 @@
 import useClickOutside from '@/hooks/useClickOutside'
 import { createCheckItem } from '@/utils/FetchApi'
 import React, { useEffect, useRef, useState } from 'react'
+import { Form, Input, Button, Space } from 'antd'
 
 const CheckItemDialog = ({
   setIsItemDialogOpen,
@@ -14,37 +15,48 @@ const CheckItemDialog = ({
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
+    if (!itemName.trim()) return
+
     const res = await createCheckItem(checklist.id, itemName)
     if (res?.id) {
       setAllItems([...allItems, res])
+      setItemName('')
     }
-    setItemName('')
   }
+
   useEffect(() => {
-    inputRef?.current.focus()
+    inputRef?.current?.focus()
   }, [])
+
   useClickOutside(dialogRef, () => setIsItemDialogOpen(false))
+
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className='flex-shrink-0 flex flex-col gap-3 border-1
-      w-66 px-4 py-3 h-fit rounded'
-      ref={dialogRef}>
-      <input type='text'
-        className='border-1 h-10 w-full rounded'
-        placeholder='Add an item'
-        onChange={(e) => setItemName(e.target.value)}
-        value={itemName}
-        ref={inputRef} />
-      <div className='flex  gap-3 h-10 items-center'>
-        <button className='border-1 rounded px-2 h-full hover:bg-gray-200'
-          type='submit'>Add</button>
-        <button className='border-1 rounded px-2 h-full hover:bg-gray-200'
-          onClick={() => setIsItemDialogOpen((prevState) => !prevState)}
-        >Cancel</button>
-      </div>
-    </form>
+    <div
+      ref={dialogRef}
+      className="bg-white border p-4 rounded-lg shadow-md w-full max-w-md"
+    >
+      <Form onSubmitCapture={handleFormSubmit}>
+        <Form.Item>
+          <Input
+            placeholder="Add an item"
+            ref={inputRef}
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Space>
+            <Button type="primary" htmlType="submit">
+              Add
+            </Button>
+            <Button onClick={() => setIsItemDialogOpen(false)}>Cancel</Button>
+          </Space>
+        </Form.Item>
+      </Form>
+    </div>
   )
 }
 
 export default CheckItemDialog
+

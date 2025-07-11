@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import axios from 'axios'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -9,8 +8,20 @@ export function fetchAllBoardsApi() {
   return `${BASE_URL}/1/members/me/boards?key=${API_KEY}&token=${TOKEN}`
 }
 
-export function createBoardApi(name) {
-  return `${BASE_URL}/1/boards/?name=${name}&key=${API_KEY}&token=${TOKEN}`
+export function createBoardApi(name, backgroundColor, backgroundImage) {
+  const params = new URLSearchParams({
+    name,
+    key: API_KEY,
+    token: TOKEN,
+  })
+
+  if (backgroundImage) {
+    params.append('prefs_background_url', backgroundImage)
+  } else if (backgroundColor) {
+    params.append('prefs_background', backgroundColor)
+  }
+
+  return `${BASE_URL}/1/boards/?${params.toString()}`
 }
 
 export function fetchAllListsOfABoardApi(boardId) {
@@ -40,10 +51,13 @@ export async function fetchAllBoards() {
   }
 }
 
-export async function createBoard(name) {
+export async function createBoard(name, prefs = {}) {
   try {
     if (!name) return
-    const apiUrl = createBoardApi(name)
+
+    const { backgroundColor, backgroundImage } = prefs
+    const apiUrl = createBoardApi(name, backgroundColor, backgroundImage)
+    console.log(apiUrl)
     const res = await axios.post(apiUrl)
     return res.data
   } catch (err) {
