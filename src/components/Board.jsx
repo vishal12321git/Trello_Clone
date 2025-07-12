@@ -6,7 +6,7 @@ const Board = ({ name, bg, id }) => {
   const isImage = typeof bg === 'string' && bg.startsWith('http')
 
   return (
-    <Link to={`/board/${id}`} className="block w-full max-w-72">
+    <Link to={`/board/${id}`} className="block w-full ">
       <Card
         hoverable
         bordered={false}

@@ -1,7 +1,7 @@
 import useClickOutside from '@/hooks/useClickOutside'
-import { createCheckItem } from '@/utils/FetchApi'
 import React, { useEffect, useRef, useState } from 'react'
 import { Form, Input, Button, Space } from 'antd'
+import { addCheckItem } from '@/services/checkItem'
 
 const CheckItemDialog = ({
   setIsItemDialogOpen,
@@ -17,7 +17,7 @@ const CheckItemDialog = ({
     e.preventDefault()
     if (!itemName.trim()) return
 
-    const res = await createCheckItem(checklist.id, itemName)
+    const res = await addCheckItem(checklist.id, itemName)
     if (res?.id) {
       setAllItems([...allItems, res])
       setItemName('')

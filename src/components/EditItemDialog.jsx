@@ -1,5 +1,5 @@
 import useClickOutside from '@/hooks/useClickOutside'
-import { updateCheckItemName } from '@/utils/FetchApi'
+import { updateCheckItemName } from '@/services/checkItem'
 import React, { useEffect, useRef, useState } from 'react'
 
 const EditItemDialog = ({

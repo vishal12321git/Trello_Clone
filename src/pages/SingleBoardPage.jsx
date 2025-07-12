@@ -1,10 +1,11 @@
 import List from '@/components/List'
-import { fetchAllListsOfABoard } from '@/utils/FetchApi'
+
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import ListDialog from '@/components/ListDialog'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
 import { Button } from 'antd'
+import { fetchListsOfBoard } from '@/services/lists'
 
 
 const SingleBoardPage = () => {
@@ -20,11 +21,11 @@ const SingleBoardPage = () => {
   const backgroundColor = board?.prefs?.backgroundColor || '#f4f5f7'
 
   useEffect(() => {
-    const fetchAllIds = async () => {
-      const res = await fetchAllListsOfABoard(id)
+    const loadLists = async () => {
+      const res = await fetchListsOfBoard(id)
       setLists(res)
     }
-    fetchAllIds()
+    loadLists()
   }, [id])
 
 

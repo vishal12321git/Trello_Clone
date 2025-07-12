@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { fetchAllBoards } from '@/utils/FetchApi'
 import { AllBoardsContext } from './AllBoardsContext'
+import { fetchAllBoards } from '@/services/boards'
 
 export const AllBoardsProvider = ({ children }) => {
   const [allBoards, setAllBoards] = useState([])

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Checkbox, Typography, Button, Tooltip, Space } from 'antd'
 import { TbHttpDelete } from 'react-icons/tb'
 import EditItemDialog from './EditItemDialog'
-import { deleteCheckItem, updateCheckItemState } from '@/utils/FetchApi'
+import { removeCheckItem, updateCheckItemState } from '@/services/checkItem'
 
 const { Text, Paragraph } = Typography
 
@@ -29,7 +29,7 @@ const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
 
   const handleDelete = async () => {
     try {
-      const res = await deleteCheckItem(checklist.id, item.id)
+      const res = await removeCheckItem(checklist.id, item.id)
       if (res.status === 200) {
         setAllItems(allItems.filter((i) => i.id !== item.id))
       }

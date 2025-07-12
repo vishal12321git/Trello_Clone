@@ -1,8 +1,8 @@
 import useClickOutside from '@/hooks/useClickOutside'
-import { createCard } from '@/utils/FetchApi'
 import React, { useEffect, useRef } from 'react'
 import { RxCross2 } from 'react-icons/rx'
 import { Button, Form, Input } from 'antd'
+import { createCard } from '@/services/cards'
 
 const { TextArea } = Input
 

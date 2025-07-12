@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { Modal, Form, Input, Button, Select, Row, Col, Typography } from 'antd'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
-import { createBoard } from '@/utils/FetchApi'
+import { createBoard } from '@/services/boards'
+
 
 const { Option } = Select
 const { Title } = Typography
@@ -19,14 +20,14 @@ const Dialog = () => {
   const [backgroundImage, setBackgroundImage] = useState(null)
   const [backgroundColor, setBackgroundColor] = useState(null)
   const [isboardCreating, setIsboardCreating] = useState(false)
-  const { setIsDialogOpen, allBoards, setAllBoards } = useContext(AllBoardsContext)
+  const { setIsDialogOpen, allBoards, setAllBoards } =
+  useContext(AllBoardsContext)
 
   const handleFinish = async ({ title }) => {
     const prefs = {
       backgroundImage,
       backgroundColor,
     }
-    console.log(backgroundColor, backgroundImage)
     const newBoard = await createBoard(title, prefs)
 
     if (newBoard?.id) {

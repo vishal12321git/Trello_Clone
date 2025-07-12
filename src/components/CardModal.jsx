@@ -4,7 +4,7 @@ import { FiCheckSquare } from 'react-icons/fi'
 import { RxCross2 } from 'react-icons/rx'
 import CheckListDialog from './CheckListDialog'
 import CheckList from './CheckList'
-import { fetchChecklistsOfCard } from '@/utils/FetchApi'
+import { getChecklistsOfCard } from '@/services/checklist'
 
 const { Title } = Typography
 
@@ -14,7 +14,7 @@ const CardModal = ({ card, isOpen, onClose }) => {
 
   useEffect(() => {
     const loadCheckLists = async () => {
-      const res = await fetchChecklistsOfCard(card.id)
+      const res = await getChecklistsOfCard(card.id)
       setAllCheckLists(res)
     }
     loadCheckLists()

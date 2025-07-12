@@ -4,10 +4,8 @@ import { Progress, Button, Tooltip, Typography, Space, Divider } from 'antd'
 import { TbHttpDelete } from 'react-icons/tb'
 import CheckItemDialog from './CheckItemDialog'
 import CheckItem from './CheckItem'
-import {
-  deleteChecklist,
-  fetchCheckItemsOfChecklist,
-} from '@/utils/FetchApi'
+import { getCheckItems } from '@/services/checkItem'
+import { removeChecklist } from '@/services/checklist'
 
 const { Text } = Typography
 
@@ -24,7 +22,7 @@ const CheckList = ({ checklist, allCheckLists, setAllCheckLists }) => {
 
   useEffect(() => {
     const loadCheckItems = async () => {
-      const res = await fetchCheckItemsOfChecklist(checklist.id)
+      const res = await getCheckItems(checklist.id)
       if (res) setAllItems(res)
     }
     loadCheckItems()
@@ -32,7 +30,7 @@ const CheckList = ({ checklist, allCheckLists, setAllCheckLists }) => {
 
   const handleDelete = async () => {
     try {
-      const res = await deleteChecklist(checklist.id)
+      const res = await removeChecklist(checklist.id)
       if (res.status === 200) {
         setAllCheckLists(allCheckLists.filter((i) => i.id !== checklist.id))
       }

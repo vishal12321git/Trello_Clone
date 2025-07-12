@@ -1,63 +1,9 @@
-// import useClickOutside from '@/hooks/useClickOutside'
-// import { createChecklist } from '@/utils/FetchApi'
-// import React, { useEffect, useRef, useState } from 'react'
-// import { RxCross2 } from 'react-icons/rx'
-
-// const CheckListDialog = ({
-//   setIsCheckListDialogOpen,
-//   cardId,
-//   allCheckLists,
-//   setAllCheckLists,
-// }) => {
-//   const [title, setTitle] = useState('')
-//   const inputRef = useRef(null)
-//   const dialogRef = useRef(null)
-//   const handleSubmitForm = async (e) => {
-//     e.preventDefault()
-//     const res = await createChecklist(cardId, title)
-//     if (res?.id) {
-//       setAllCheckLists([...allCheckLists, res])
-//       setIsCheckListDialogOpen(false)
-//     }
-//   }
-//   useEffect(() => {
-//     inputRef?.current.focus()
-//   }, [])
-//   useClickOutside(dialogRef, () => setIsCheckListDialogOpen(false))
-//   return (
-//     <div className=' w-full  mt-1 border-1 rounded'>
-//       <div className='flex p-2 items-center'>
-//         <div className='w-full text-center'>Add checklist</div>
-//         <RxCross2
-//           className='text-xl border-1 h-9 w-9 px-1 rounded hover:bg-gray-200'
-//           onClick={() => setIsCheckListDialogOpen(false)} />
-//       </div>
-//       <form
-//         onSubmit={handleSubmitForm}
-//         className='flex-shrink-0 flex flex-col px-4 h-fit rounded'
-//         ref={dialogRef}>
-//         <label>Title</label>
-//         <input
-//           type='text'
-//           className='border-1 h-10 w-full rounded'
-//           onChange={(e) => setTitle(e.target.value)}
-//           ref={inputRef} />
-//         <button
-//           className='border-1 w-15 rounded px-1 h-10 my-2 hover:bg-gray-200'
-//           type='submit'>Add</button>
-//       </form>
-//     </div>
-
-//   )
-// }
-
-// export default CheckListDialog
-
 import React, { useEffect, useRef } from 'react'
 import { Form, Input, Button, Divider } from 'antd'
 import { RxCross2 } from 'react-icons/rx'
 import useClickOutside from '@/hooks/useClickOutside'
-import { createChecklist } from '@/utils/FetchApi'
+import { addChecklist } from '@/services/checklist'
+
 
 const CheckListDialog = ({
   setIsCheckListDialogOpen,
@@ -77,7 +23,7 @@ const CheckListDialog = ({
 
   const handleSubmit = async (values) => {
     const { title } = values
-    const res = await createChecklist(cardId, title)
+    const res = await addChecklist(cardId, title)
     if (res?.id) {
       setAllCheckLists([...allCheckLists, res])
       setIsCheckListDialogOpen(false)

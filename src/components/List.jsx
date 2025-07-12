@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
-import { deleteList, fetchCardsOfList } from '@/utils/FetchApi'
 import CardDialog from './CardDialog'
 import { TbHttpDelete } from 'react-icons/tb'
 import { Button } from 'antd'
+import { fetchCardsOfList } from '@/services/cards'
+import { deleteList } from '@/services/lists'
 
 const List = ({ list, lists, setLists }) => {
   const [cards, setCards] = useState([])
@@ -25,7 +26,6 @@ const List = ({ list, lists, setLists }) => {
       if (res.status == 200) {
         const updatedLists = lists.filter((l) => l.id !== list.id)
         setLists(updatedLists)
-        console.log(lists)
       }
     } catch (error) {
       console.log('error white archiving list', error)

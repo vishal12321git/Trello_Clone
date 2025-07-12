@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import CardModal from './CardModal'
 import { TbHttpDelete } from 'react-icons/tb'
-import { deleteCard } from '@/utils/FetchApi'
 import { Col, Row } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
+import { deleteCard } from '@/services/cards'
 
 const Card = ({ card, list, cards, setCards }) => {
   const [checked, setChecked] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
   const handleDelete = async (e) => {
     e.stopPropagation()
     try {
