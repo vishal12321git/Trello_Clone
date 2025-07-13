@@ -1,4 +1,4 @@
-import { buildUrl } from '@/utils/UrlBuilder'
+import { buildUrl } from '@/config/UrlBuilder'
 
 export const getListsUrl = (boardId) => buildUrl(`/1/boards/${boardId}/lists`)
 

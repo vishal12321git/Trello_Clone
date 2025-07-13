@@ -1,4 +1,4 @@
-import { buildUrl } from '@/utils/UrlBuilder'
+import { buildUrl } from '@/config/UrlBuilder'
 
 export const getCheckItemsUrl = (checklistId) =>
   buildUrl(`/1/checklists/${checklistId}`)

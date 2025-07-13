@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Typography, Button, Divider, Tooltip, Empty } from 'antd'
+import { Modal, Typography, Button, Divider, Empty } from 'antd'
 import { FiCheckSquare } from 'react-icons/fi'
 import { RxCross2 } from 'react-icons/rx'
-import CheckListDialog from './CheckListDialog'
+import CheckListDialog from './Dialogs/CheckListDialog'
 import CheckList from './CheckList'
 import { getChecklistsOfCard } from '@/services/checklist'
 

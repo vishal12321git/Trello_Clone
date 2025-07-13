@@ -2,8 +2,7 @@ import React, { useContext } from 'react'
 import trelloLogo from '../assets/trello_logo.svg'
 import trelloSmLogo from '../assets/trello.svg'
 import { Button, Avatar, Space, Tooltip } from 'antd'
-import { MdContactSupport } from 'react-icons/md'
-import Dialog from './Dialog'
+import Dialog from './Dialogs/BoardDialog'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
 import { Link } from 'react-router-dom'
 
@@ -11,10 +10,9 @@ const Navbar = () => {
   const { isDialogOpen, setIsDialogOpen } = useContext(AllBoardsContext)
 
   return (
-    <div className="shadow-sm bg-white">
+    <div className="shadow-md backdrop-blur-md fixed w-full z-10 ">
       <div className="h-20 flex justify-between
       items-center gap-4 w-11/12 m-auto">
-
         <Link to='/' className='w-8 sm:w-24'>
           <img
             src={trelloLogo}
@@ -27,7 +25,6 @@ const Navbar = () => {
             alt="Trello small logo"
           />
         </Link>
-
         <div className="relative">
           <Button
             type="primary"
@@ -38,12 +35,7 @@ const Navbar = () => {
           </Button>
           {isDialogOpen && <Dialog />}
         </div>
-
         <Space size="large" className="items-center">
-          <Tooltip title="Support">
-            <MdContactSupport
-              className="text-2xl cursor-pointer text-gray-700" />
-          </Tooltip>
           <Avatar
             size="large"
             style={{ backgroundColor: '#9254de', cursor: 'pointer' }}

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react'
-import { Form, Input, Button, Divider } from 'antd'
+import React, { useEffect, useRef, useState } from 'react'
+import { Form, Input, Button } from 'antd'
 import { RxCross2 } from 'react-icons/rx'
 import useClickOutside from '@/hooks/useClickOutside'
 import { addChecklist } from '@/services/checklist'
-
 
 const CheckListDialog = ({
   setIsCheckListDialogOpen,
@@ -11,25 +10,27 @@ const CheckListDialog = ({
   allCheckLists,
   setAllCheckLists,
 }) => {
+  const [isCreatingChecklist, setIsCreatingChecklist] = useState(false)
   const [form] = Form.useForm()
   const inputRef = useRef(null)
   const dialogRef = useRef(null)
 
   useClickOutside(dialogRef, () => setIsCheckListDialogOpen(false))
-
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
 
   const handleSubmit = async (values) => {
     const { title } = values
+    if (!title) return
+    setIsCreatingChecklist(true)
     const res = await addChecklist(cardId, title)
     if (res?.id) {
       setAllCheckLists([...allCheckLists, res])
       setIsCheckListDialogOpen(false)
     }
+    setIsCreatingChecklist(false)
   }
-
   return (
     <div className='w-full mt-1 border
     border-gray-200 rounded bg-white shadow-md'>
@@ -42,7 +43,6 @@ const CheckListDialog = ({
           onClick={() => setIsCheckListDialogOpen(false)}
         />
       </div>
-
       <div className='px-4 py-3' ref={dialogRef}>
         <Form
           form={form}
@@ -53,8 +53,10 @@ const CheckListDialog = ({
           <Form.Item
             label="Title"
             name="title"
-            rules={[{ required: true,
-              message: 'Please enter checklist title' }]}
+            rules={[{
+              required: true,
+              message: 'Please enter checklist title',
+            }]}
           >
             <Input
               placeholder="Enter checklist title"
@@ -64,8 +66,12 @@ const CheckListDialog = ({
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" className='w-full'>
-              Add Checklist
+            <Button
+              type="primary"
+              htmlType="submit"
+              className='w-full'
+              loading={isCreatingChecklist}>
+              {isCreatingChecklist ? 'Adding Checklist' : 'Add Checklist'}
             </Button>
           </Form.Item>
         </Form>

@@ -1,12 +1,10 @@
 import List from '@/components/List'
-
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import ListDialog from '@/components/ListDialog'
+import ListDialog from '@/components/Dialogs/ListDialog'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
 import { Button } from 'antd'
 import { fetchListsOfBoard } from '@/services/lists'
-
 
 const SingleBoardPage = () => {
   const { id } = useParams()
@@ -28,7 +26,6 @@ const SingleBoardPage = () => {
     loadLists()
   }, [id])
 
-
   function handleClickAddList() {
     setIsListDialogOpen(true)
   }
@@ -38,7 +35,7 @@ const SingleBoardPage = () => {
   }
 
   return (
-    <div className={`min-h-screen bg-cover bg-no-repeat bg-center pt-4`}
+    <div className={`min-h-screen bg-cover bg-no-repeat bg-center pt-25`}
       style={{
         backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
         backgroundColor: backgroundImage ? undefined : backgroundColor,
@@ -72,7 +69,6 @@ const SingleBoardPage = () => {
             className='w-66'
             onClick={handleClickAddList}
           >Add another list</Button>
-
         }
       </div>
     </div>

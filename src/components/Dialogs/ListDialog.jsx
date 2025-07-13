@@ -4,7 +4,6 @@ import { RxCross2 } from 'react-icons/rx'
 import useClickOutside from '@/hooks/useClickOutside'
 import { createList } from '@/services/lists'
 
-
 const ListDialog = ({ setIsListDialogOpen, boardId, lists, setLists }) => {
   const [form] = Form.useForm()
   const dialogRef = useRef(null)
@@ -13,20 +12,17 @@ const ListDialog = ({ setIsListDialogOpen, boardId, lists, setLists }) => {
   const handleFormSubmit = async (values) => {
     const listName = values.listName.trim()
     if (!listName) return
-
     const res = await createList(listName, boardId)
     if (res?.id) {
       setLists([...lists, res])
       form.resetFields()
     }
   }
-
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
 
   useClickOutside(dialogRef, () => setIsListDialogOpen(false))
-
   return (
     <div
       ref={dialogRef}
@@ -46,6 +42,7 @@ const ListDialog = ({ setIsListDialogOpen, boardId, lists, setLists }) => {
             ref={inputRef}
             placeholder="Enter list name..."
             className="h-10"
+            autoFocus
           />
         </Form.Item>
 

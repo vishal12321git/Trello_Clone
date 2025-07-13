@@ -8,28 +8,27 @@ const CheckItemDialog = ({
   checklist,
   allItems,
   setAllItems,
+  setIsCreatingCheckItem,
+  isCreatingCheckItem,
 }) => {
   const [itemName, setItemName] = useState('')
   const inputRef = useRef(null)
   const dialogRef = useRef(null)
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault()
+  const handleFormSubmit = async () => {
     if (!itemName.trim()) return
-
+    setIsCreatingCheckItem(true)
     const res = await addCheckItem(checklist.id, itemName)
     if (res?.id) {
       setAllItems([...allItems, res])
       setItemName('')
     }
+    setIsCreatingCheckItem(false)
   }
-
   useEffect(() => {
     inputRef?.current?.focus()
   }, [])
 
   useClickOutside(dialogRef, () => setIsItemDialogOpen(false))
-
   return (
     <div
       ref={dialogRef}
@@ -47,8 +46,11 @@ const CheckItemDialog = ({
 
         <Form.Item>
           <Space>
-            <Button type="primary" htmlType="submit">
-              Add
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isCreatingCheckItem}>
+              {isCreatingCheckItem ? 'Adding' : 'Add'}
             </Button>
             <Button onClick={() => setIsItemDialogOpen(false)}>Cancel</Button>
           </Space>

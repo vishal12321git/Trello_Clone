@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card'
-import CardDialog from './CardDialog'
+import CardDialog from './Dialogs/CardDialog'
 import { TbHttpDelete } from 'react-icons/tb'
 import { Button } from 'antd'
 import { fetchCardsOfList } from '@/services/cards'
@@ -9,6 +9,8 @@ import { deleteList } from '@/services/lists'
 const List = ({ list, lists, setLists }) => {
   const [cards, setCards] = useState([])
   const [isCardDialogOpen, setIsCardDialogOpen] = useState(false)
+  const [deletingCardId, setDeletingCardId] = useState(null)
+
   useEffect(() => {
     const loadCards = async () => {
       const res = await fetchCardsOfList(list.id)
@@ -21,14 +23,10 @@ const List = ({ list, lists, setLists }) => {
     setIsCardDialogOpen(true)
   }
   const handleDelete = async () => {
-    try {
-      const res = await deleteList(list.id)
-      if (res.status == 200) {
-        const updatedLists = lists.filter((l) => l.id !== list.id)
-        setLists(updatedLists)
-      }
-    } catch (error) {
-      console.log('error white archiving list', error)
+    const res = await deleteList(list.id)
+    if (res.status == 200) {
+      const updatedLists = lists.filter((l) => l.id !== list.id)
+      setLists(updatedLists)
     }
   }
   return (
@@ -49,7 +47,13 @@ const List = ({ list, lists, setLists }) => {
       </div>
 
       {cards.map((card) => (
-        <Card card={card} list={list} cards={cards} setCards={setCards} />
+        <Card
+          card={card}
+          list={list}
+          cards={cards}
+          setCards={setCards}
+          deletingCardId={deletingCardId}
+          setDeletingCardId={setDeletingCardId} />
       ))}
       {isCardDialogOpen ?
         <CardDialog

@@ -1,22 +1,23 @@
 import React, { useContext } from 'react'
 import Board from '../components/Board'
 import { AllBoardsContext } from '@/contexts/AllBoardsContext'
+import { Spin } from 'antd'
 
 const BoardsContainer = () => {
-  const { allBoards, loading, error, setIsDialogOpen } = useContext(
-    AllBoardsContext,
-  )
+  const {
+    allBoards,
+    loading,
+    setIsDialogOpen } = useContext(AllBoardsContext)
 
   if (loading) {
-    return <div className="text-center py-4">Loading boards...</div>
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Spin size="large" tip="Loading boards..." />
+      </div>
+    )
   }
-
-  if (error) {
-    return <div className="text-center text-red-500 py-4">{error}</div>
-  }
-
   return (
-    <div className='grid grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))]
+    <div className='grid grid-cols-[repeat(auto-fit,_minmax(280px,410px))]
     gap-8 mt-6 '>
       {allBoards.map((board) => (
         <Board

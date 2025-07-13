@@ -1,47 +1,41 @@
 import React, { useState } from 'react'
-import { Checkbox, Typography, Button, Tooltip, Space } from 'antd'
-import { TbHttpDelete } from 'react-icons/tb'
-import EditItemDialog from './EditItemDialog'
+import { Checkbox, Typography, Button } from 'antd'
+import EditItemDialog from './Dialogs/EditItemDialog'
 import { removeCheckItem, updateCheckItemState } from '@/services/checkItem'
+import { MdDelete } from 'react-icons/md'
 
-const { Text, Paragraph } = Typography
-
-const MAX_LENGTH = 80
-
+const { Paragraph } = Typography
 const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
   const [isEditItemDialogOpen, setIsEditItemDialogOpen] = useState(false)
-
+  const [isCheckItemDeleting, setIsCheckItemDeleting] = useState(false)
   const isChecked = item.state === 'complete'
 
   const handleCheckboxChange = async (e) => {
-    const checked = e.target.checked
-    try {
-      await updateCheckItemState(checklist.idCard, item.id, checked)
-      setAllItems(allItems.map((i) =>
-        i.id === item.id ?
-          { ...i, state: checked ? 'complete' : 'incomplete' } :
-          i,
-      ))
-    } catch (error) {
-      console.error('Error updating check item state:', error)
-    }
+    const isChecked = e.target.checked
+    await updateCheckItemState(checklist.idCard, item.id, isChecked)
+
+    const updatedCheckItems = allItems.map((checkItem) =>
+      checkItem.id === item.id ?
+        { ...checkItem, state: isChecked ? 'complete' : 'incomplete' } :
+        checkItem,
+    )
+
+    setAllItems(updatedCheckItems)
   }
 
   const handleDelete = async () => {
-    try {
-      const res = await removeCheckItem(checklist.id, item.id)
-      if (res.status === 200) {
-        setAllItems(allItems.filter((i) => i.id !== item.id))
-      }
-    } catch (err) {
-      console.error('Failed to delete check item:', err)
+    setIsCheckItemDeleting(true)
+    const res = await removeCheckItem(checklist.id, item.id)
+    if (res.status === 200) {
+      setAllItems(
+        (prev) => prev.filter((currItem) => currItem.id !== item.id),
+      )
     }
+    setIsCheckItemDeleting(false)
   }
-
   return (
     <div className="flex items-start gap-3 mb-2 w-full">
       <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-
       <div className="flex-1 w-full">
         {isEditItemDialogOpen ? (
           <EditItemDialog
@@ -70,10 +64,10 @@ const CheckItem = ({ item, checklist, allItems, setAllItems }) => {
           </div>
         )}
       </div>
-
-      <TbHttpDelete
-        className="text-xl text-red-500 cursor-pointer hover:text-red-600"
-        onClick={handleDelete}
+      <Button
+        icon={<MdDelete />}
+        loading={isCheckItemDeleting}
+        onClick={() => handleDelete()}
       />
     </div>
   )

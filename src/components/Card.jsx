@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
-import { FaCheck } from 'react-icons/fa'
 import CardModal from './CardModal'
-import { TbHttpDelete } from 'react-icons/tb'
-import { Col, Row } from 'antd'
+import { Button, Col, Row } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { deleteCard } from '@/services/cards'
+import { MdDelete } from 'react-icons/md'
 
-const Card = ({ card, list, cards, setCards }) => {
+const Card = ({
+  card,
+  list,
+  cards,
+  setCards,
+  deletingCardId,
+  setDeletingCardId }) => {
   const [checked, setChecked] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const handleDelete = async (e) => {
-    e.stopPropagation()
-    try {
-      const res = await deleteCard(card.id)
-      if (res.status == 200) {
-        const updatedCards = cards.filter((c) => c.id !== card.id)
-        setCards(updatedCards)
-      }
-    } catch (err) {
-      console.log('Error while deleting card', err)
+  const handleDelete = async (id) => {
+    if (deletingCardId) return
+    setDeletingCardId(id)
+    const res = await deleteCard(card.id)
+    if (res.status == 200) {
+      const updatedCards = cards.filter(
+        (existingCard) => existingCard.id !== card.id,
+      )
+      setCards(updatedCards)
     }
+    setDeletingCardId(null)
   }
-
   return (
     <>
       <Row
@@ -30,25 +34,23 @@ const Card = ({ card, list, cards, setCards }) => {
         className="border-1 min-h-10 rounded px-2
         cursor-pointer group transition-all duration-300"
         style={{ background: '#fff', marginBottom: '8px' }}
-        onClick={() => setIsModalOpen(true)}
-        wrap={false} // prevents wrapping of children
+        wrap={false}
       >
-        <Col flex="auto">
+        <Col flex="auto" onClick={() => setIsModalOpen(true)}>
           <TextArea
             value={card.name}
             autoSize={{ minRows: 1, maxRows: 100 }}
             readOnly
-            bordered={false}
+            variant="borderless"
             className="bg-transparent resize-none pointer-events-none"
           />
         </Col>
         <Col flex="32px">
-          <TbHttpDelete
-            onClick={(e) => {
-              e.stopPropagation()
-              handleDelete(e)
-            }}
-            className="text-xl hover:text-red-400"
+          <Button
+            icon={<MdDelete />}
+            loading={deletingCardId === card.id}
+            disabled={deletingCardId && deletingCardId !== card.id}
+            onClick={() => handleDelete(card.id)}
           />
         </Col>
       </Row>
